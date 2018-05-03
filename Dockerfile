@@ -19,6 +19,7 @@ RUN wget -q -O tfalks.tar.gz https://github.com/Cox-Automotive/terraform-provide
 RUN git clone https://github.com/kamatama41/tfenv.git /opt/.tfenv
 RUN ln -s /opt/.tfenv/bin/tfenv /usr/local/bin/tfenv
 RUN ln -s /opt/.tfenv/bin/terraform /usr/local/bin/terraform
+RUN tfenv install 0.11.6
 RUN tfenv install 0.11.7
 
 RUN chown -R jenkins: /opt/.tfenv
