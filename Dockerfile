@@ -44,11 +44,10 @@ RUN chmod +x /bin/terragrunt
 RUN git clone https://github.com/rbenv/rbenv.git /home/jenkins/.rbenv
 RUN git clone https://github.com/rbenv/ruby-build.git /home/jenkins/.rbenv/plugins/ruby-build
 RUN chown -R jenkins: /home/jenkins/.rbenv
-RUN echo 'PATH=~/.rbenv/shims:$PATH' >>~/.profile
 RUN ln -s /home/jenkins/.rbenv/bin/rbenv /usr/local/bin/rbenv
 
 USER jenkins
 RUN rbenv install 2.4.4
 RUN rbenv global 2.4.4
-RUN echo 'PATH=~/.rbenv/shims:$PATH' >> ~/.bash_profile
+RUN echo 'PATH=~/.rbenv/shims:$PATH' >> ~/.profile
 ENTRYPOINT ["jenkins-slave"]
