@@ -44,6 +44,7 @@ RUN chmod +x /bin/terragrunt
 RUN git clone https://github.com/rbenv/rbenv.git /home/jenkins/.rbenv
 RUN git clone https://github.com/rbenv/ruby-build.git /home/jenkins/.rbenv/plugins/ruby-build
 RUN chown -R jenkins: /home/jenkins/.rbenv
+RUN echo 'PATH=~/.rbenv/shims:$PATH' >>~/.profile
 RUN ln -s /home/jenkins/.rbenv/bin/rbenv /usr/local/bin/rbenv
 
 USER jenkins
