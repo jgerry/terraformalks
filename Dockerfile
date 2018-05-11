@@ -7,6 +7,9 @@ ENV PACKER_VERSION=1.2.3
 
 USER root
 
+### add to sudoers
+RUN usermod -aG sudo jenkins
+
 ### dev tools
 RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
 RUN apt-get -y update
@@ -26,7 +29,6 @@ RUN wget -q -O tfalks.tar.gz https://github.com/Cox-Automotive/terraform-provide
 RUN git clone https://github.com/kamatama41/tfenv.git /opt/.tfenv
 RUN ln -s /opt/.tfenv/bin/tfenv /usr/local/bin/tfenv
 RUN ln -s /opt/.tfenv/bin/terraform /usr/local/bin/terraform
-RUN tfenv install 0.11.7
 RUN chown -R jenkins: /opt/.tfenv
 COPY .terraformrc /home/jenkins/.terraformrc
 RUN chown jenkins: /home/jenkins/.terraformrc
@@ -47,7 +49,10 @@ RUN chown -R jenkins: /home/jenkins/.rbenv
 RUN ln -s /home/jenkins/.rbenv/bin/rbenv /usr/local/bin/rbenv
 
 USER jenkins
+
+RUN echo 'export PATH=~/.rbenv/shims:$PATH' >> ~/.bashrc
+RUN tfenv install 0.11.7
 RUN rbenv install 2.4.4
 RUN rbenv global 2.4.4
-RUN echo 'PATH=~/.rbenv/shims:$PATH' >> ~/.profile
+
 ENTRYPOINT ["jenkins-slave"]
