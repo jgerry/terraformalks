@@ -48,6 +48,9 @@ RUN git clone https://github.com/rbenv/ruby-build.git /home/jenkins/.rbenv/plugi
 RUN chown -R jenkins: /home/jenkins/.rbenv
 RUN ln -s /home/jenkins/.rbenv/bin/rbenv /usr/local/bin/rbenv
 
+### set default shell for jenkins user to bash
+RUN chsh -s /bin/bash jenkins
+
 USER jenkins
 
 RUN echo 'export PATH=~/.rbenv/shims:$PATH' >> ~/.bashrc
