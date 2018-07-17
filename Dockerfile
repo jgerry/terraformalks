@@ -2,8 +2,8 @@ FROM jenkins/jnlp-slave
 MAINTAINER Jason Gerry
 
 ENV TF_ALKS_PROVIDER_VERSION=0.9.11.1
-ENV TERRAGRUNT_VERSION=v0.14.11
-ENV PACKER_VERSION=1.2.4
+ENV TERRAGRUNT_VERSION=v0.16.3
+ENV PACKER_VERSION=1.2.5
 
 USER root
 
@@ -15,7 +15,7 @@ RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selectio
 RUN apt-get -y update
 RUN apt-get -y install apt-utils
 RUN apt-get -y upgrade
-RUN apt-get -y install build-essential readline-common libreadline-dev openssl libssl-dev zlib1g-dev
+RUN apt-get -y install build-essential readline-common libreadline-dev openssl libssl-dev zlib1g-dev python-pip
 
 ### jq
 RUN cd /usr/local/bin; curl -O https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64; mv jq-linux64 jq; chmod 755 jq
@@ -53,9 +53,13 @@ RUN chsh -s /bin/bash jenkins
 
 USER jenkins
 
-RUN echo 'export PATH=~/.rbenv/shims:$PATH' >> ~/.bashrc
+RUN echo 'export PATH=$HOME/.rbenv/shims:$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH' >> ~/.bashrc
+ENV PATH $HOME/.rbenv/shims:$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin:$PATH
 RUN tfenv install 0.11.7
 RUN rbenv install 2.4.4
 RUN rbenv global 2.4.4
+
+### aws cli
+RUN pip install awscli --upgrade --user
 
 ENTRYPOINT ["jenkins-slave"]
