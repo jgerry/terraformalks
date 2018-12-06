@@ -2,10 +2,11 @@ FROM jenkins/jnlp-slave
 MAINTAINER Jason Gerry
 
 ENV TF_ALKS_PROVIDER_VERSION=1.0.0
-ENV TERRAGRUNT_VERSION=v0.17.1
-ENV PACKER_VERSION=1.3.2
-ENV TERRAFORM_VERSION=0.11.8
+ENV TERRAGRUNT_VERSION=v0.17.3
+ENV PACKER_VERSION=1.3.3
+ENV TERRAFORM_VERSION=0.11.10
 ENV RUBY_VERSION=2.3.7
+ENV JQ_VERSION=1.6
 
 USER root
 
@@ -20,7 +21,7 @@ RUN apt-get -y upgrade
 RUN apt-get -y install build-essential readline-common libreadline-dev openssl libssl1.0-dev zlib1g-dev python-pip
 
 ### jq
-RUN cd /usr/local/bin; curl -O https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64; mv jq-linux64 jq; chmod 755 jq
+RUN cd /usr/local/bin; curl -O https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64; mv jq-linux64 jq; chmod 755 jq
 
 ### alks
 RUN wget -q -O tfalks.tar.gz https://github.com/Cox-Automotive/terraform-provider-alks/releases/download/${TF_ALKS_PROVIDER_VERSION}/terraform-provider-alks-linux-amd64.tar.gz && \
@@ -61,6 +62,8 @@ ENV PATH $HOME/.rbenv/shims:$HOME/.rbenv/bin:$HOME/.rbenv/plugins/ruby-build/bin
 RUN tfenv install $TERRAFORM_VERSION
 RUN rbenv install $RUBY_VERSION
 RUN rbenv global $RUBY_VERSION
+RUN gem install terraform_landscape
+RUN rbenv rehash
 
 ### aws cli
 RUN pip install awscli --upgrade --user
