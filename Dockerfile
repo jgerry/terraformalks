@@ -21,7 +21,7 @@ RUN apt-get -y upgrade
 RUN apt-get -y install build-essential readline-common libreadline-dev openssl libssl1.0-dev zlib1g-dev python-pip
 
 ### jq
-RUN cd /usr/local/bin; curl -O https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64; mv jq-linux64 jq; chmod 755 jq
+RUN cd /usr/local/bin; curl -O https://github.com/stedolan/jq/releases/download/jq-${JQ_VERSION}/jq-linux64; mv jq-linux64 jq; chmod 755 jq
 
 ### alks
 RUN wget -q -O tfalks.tar.gz https://github.com/Cox-Automotive/terraform-provider-alks/releases/download/${TF_ALKS_PROVIDER_VERSION}/terraform-provider-alks-linux-amd64.tar.gz && \
